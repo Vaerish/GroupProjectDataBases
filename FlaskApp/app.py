@@ -63,5 +63,46 @@ def signUp():
         cursor.close() 
         conn.close()
 
+
+##Login()	
+##	username = prompt user for username
+##	password = prompt user for password
+##if (query user table for match and if found) 
+##logged_in = true
+##	else 
+##		display login error message
+##
+##Create_User()	
+##	username = prompt user for username
+##	password = prompt user for password
+##	if(username !exist in username section of user table)
+##		Insert new username into the user table along with the password
+##
+##Delete_User()
+##	//A way to delete one's own account
+##	if(prompt for confirmation is confirmed)
+##		Remove user from user table
+##		Cascades changes throughout the other tables
+##
+##Take_Quiz()	
+##// Will display the questions in a linear order and start adding answer scores
+##	Loop through Questions
+##		display question
+##		display answers of joining current Qnum in Questions == Qnum in Answers table
+##		add weights of user chosen answer to the weights in personality
+##	calculate personality_full_name in personality based on weights
+##	add personality_full_name to previous_scores
+##
+##Show_Personality_Score()	
+##	p = retrieve personality_full_name from Personality matching to the current username
+##	display the list of all celebrities with a matching personality
+##	display a list of all the fictional characters with matching personality types
+##
+##Compare_Score() 
+##	name = prompt user for name
+##	if(name exists in User)
+##		display username next to their personality_full_name from the Personality table
+
+
 if __name__ == '__main__':
     app.run(debug=True)
