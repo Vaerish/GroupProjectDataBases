@@ -23,12 +23,15 @@ def home():
 
 @app.route('/about')
 def about():
-    return "<h2>A collaborative project to test your personality against other students and see how compatible you are according to the Brygs-Myers test</h2>"
+    return render_template('about.html')
 
 
 @app.route('/showSignUp')
 def showSignUp():
     return render_template('signup.html')
+@app.route('/showSignIn')
+def showSignIn():
+    return render_template('signin.html')
 
 
 @app.route('/signUp',methods=['POST','GET'])
