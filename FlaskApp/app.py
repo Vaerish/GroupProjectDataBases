@@ -17,9 +17,6 @@ mysql.init_app(app)
 def main():
     return render_template('index.html')
 
-@app.route('/home')
-def home():
-    return "<h2>This site is a flask pyhon database system to compare ones own Brygs-Myers Personality type to someone elses</h2>"
 
 @app.route('/about')
 def about():
@@ -32,7 +29,14 @@ def showSignUp():
 @app.route('/showSignIn')
 def showSignIn():
     return render_template('signin.html')
-
+##Login()	
+##	username = prompt user for username
+##	password = prompt user for password
+##if (query user table for match and if found) 
+##logged_in = true
+##	else 
+##		display login error message
+##
 
 @app.route('/signUp',methods=['POST','GET'])
 def signUp():
@@ -65,28 +69,24 @@ def signUp():
     finally:
         cursor.close() 
         conn.close()
-
-
-##Login()	
-##	username = prompt user for username
-##	password = prompt user for password
-##if (query user table for match and if found) 
-##logged_in = true
-##	else 
-##		display login error message
-##
 ##Create_User()	
 ##	username = prompt user for username
 ##	password = prompt user for password
 ##	if(username !exist in username section of user table)
 ##		Insert new username into the user table along with the password
 ##
+
+
+def dashboard()
+    render_template('dashboard.html')
+        
 ##Delete_User()
 ##	//A way to delete one's own account
 ##	if(prompt for confirmation is confirmed)
 ##		Remove user from user table
 ##		Cascades changes throughout the other tables
 ##
+     
 ##Take_Quiz()	
 ##// Will display the questions in a linear order and start adding answer scores
 ##	Loop through Questions
@@ -101,6 +101,9 @@ def signUp():
 ##	display the list of all celebrities with a matching personality
 ##	display a list of all the fictional characters with matching personality types
 ##
+
+def compareDashboard()
+    render_template('compare.html')
 ##Compare_Score() 
 ##	name = prompt user for name
 ##	if(name exists in User)
