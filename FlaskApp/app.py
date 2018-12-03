@@ -76,9 +76,9 @@ def signUp():
 ##		Insert new username into the user table along with the password
 ##
 
-
-def dashboard()
-    render_template('dashboard.html')
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
         
 ##Delete_User()
 ##	//A way to delete one's own account
@@ -102,8 +102,8 @@ def dashboard()
 ##	display a list of all the fictional characters with matching personality types
 ##
 
-def compareDashboard()
-    render_template('compare.html')
+#def compareDashboard()
+#    render_template('compare.html')
 ##Compare_Score() 
 ##	name = prompt user for name
 ##	if(name exists in User)
