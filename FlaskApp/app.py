@@ -55,9 +55,9 @@ def Authenticate():
 ##		display login error message
 ##
 @app.route('/test')
-    def test():
-        #call sql
-        return render_template('test.html')
+def test():
+    #call sql
+    return render_template('test.html')
 
 @app.route('/signUp',methods=['POST','GET'])
 def signUp():
@@ -75,7 +75,7 @@ def signUp():
 			print('INSERTING ERROR:  ' + str(e))
 			return "Failed"
 	else:
-		return "Invalid Entry State"
+		return render_template('error.html')
 	return "Completed"
 
 @app.route('/dashboard')
