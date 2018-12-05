@@ -1,17 +1,15 @@
 ﻿$(function() {
-    $('#btnSignUp').click(function() {
+    $('#btnSignIn').click(function() {
  
         $.ajax({
-            url: '/signUp',
+            url: '/signIn',
             data: $('form').serialize(),
-            type: 'POST',
+            type: 'GET',
             success: function(response) {
                 console.log(response);
-                window.location = '/success';
             },
             error: function(error) {
                 console.log(error);
-                window.location = '/errorSignUp';
             }
         });
     });

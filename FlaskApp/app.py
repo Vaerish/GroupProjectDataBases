@@ -1,4 +1,4 @@
-from flask import Flask, render_template, json, request
+from flask import Flask, render_template, json, request, redirect, url_for
 from flaskext.mysql import MySQL
 #from flask_mysqldb import MySQL
 from werkzeug import generate_password_hash, check_password_hash
@@ -33,18 +33,28 @@ def showSignIn():
 
 
 #Works but only through typing 'http://127.0.0.1:5000/Authenticate?UserName=Admin&Password=admin'
+<<<<<<< HEAD
 #Also only works with EmpData database. https://codehandbook.org/python-web-application-flask-mysql/
 @app.route("/Authenticate")
+=======
+#Also only works with EmpData database
+@app.route('/signIn',methods=['POST','GET'])
+>>>>>>> f33ce276c38901ad8e4f08a471daf942930225f1
 def Authenticate():
     username = request.form['inputName']
     password = request.form['inputPassword']
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from Account where username='" + username + "' and user_password='" + password + "'")
-    data = cursor.fetchone()
-    if data is None:
-     return "Username or Password is wrong"
+    cursor.execute('''SELECT * FROM Account WHERE username=%s''',(username))
+    result = cursor.fetchall()
+    if not len(result) == 0:
+    	if result[0][1] == password:
+    		print("SUCCCESSSFUL")
+    	else:
+    		print("Password incorrect")
     else:
-     return "Logged in successfully"
+    	print("No User Found")
+    return 'result'
+    
 
 ##Login()	
 ##	username = prompt user for username
@@ -64,7 +74,7 @@ def signUp():
 	_name = request.form['inputName']
 	_password = request.form['inputPassword']
 
-	if _name and _password:
+	if _name and _password and (request.method == 'POST'):
 		try:
 			conn = mysql.connect()
 			cursor = conn.cursor()
@@ -73,8 +83,18 @@ def signUp():
 		except Exception as e:
 			return ('INSERTING ERROR:  ' + str(e))
 	else:
-		return render_template('error.html')
-	return "Completed"
+		return "error"
+	return "Success"
+
+@app.route('/success')
+def success():
+    return render_template('success.html')
+  
+
+@app.route('/errorSignUp')
+def errorSignUp():
+    return render_template('errorSignUp.html')
+
 
 @app.route('/dashboard')
 def dashboard():
