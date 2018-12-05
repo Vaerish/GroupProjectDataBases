@@ -30,6 +30,17 @@ def showSignUp():
 @app.route('/showSignIn')
 def showSignIn():
     return render_template('signin.html')
+@app.route('/errorSignUp')
+def errorSignUp():
+    return render_template('errorSignUp.html')
+
+@app.route('/errorSignIn')
+def errorSignIn():
+    return render_template('errorSignIn.html')
+
+@app.route('/succes')
+def success():
+    return render_template('success')
 
 
 #Works but only through typing 'http://127.0.0.1:5000/Authenticate?UserName=Admin&Password=admin'
@@ -62,10 +73,9 @@ def test():
 @app.route('/signUp',methods=['POST','GET'])
 def signUp():
 	_name = request.form['inputName']
-	_email = request.form['inputEmail']
 	_password = request.form['inputPassword']
 
-	if _name and _email and _password:
+	if _name and _password:
 		try:
 			conn = mysql.connect()
 			cursor = conn.cursor()
@@ -73,10 +83,10 @@ def signUp():
 			conn.commit()
 		except Exception as e:
 			print('INSERTING ERROR:  ' + str(e))
-			return "Failed"
+			return render_template('errorSignUp.html')
 	else:
-		return render_template('error.html')
-	return "Completed"
+		return errorSignUp()
+	return success()
 
 @app.route('/dashboard')
 def dashboard():
