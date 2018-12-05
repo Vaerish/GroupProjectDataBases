@@ -82,11 +82,14 @@ def signUp():
 @app.route('/success')
 def success():
     return render_template('success.html')
-  
 
 @app.route('/errorSignUp')
 def errorSignUp():
     return render_template('errorSignUp.html')
+
+@app.route('/errorSignIn')
+def errorSignIn():
+    return render_template('errorSignIn.html')
 
 
 @app.route('/dashboard')
