@@ -1,5 +1,6 @@
 from flask import Flask, render_template, json, request
 from flaskext.mysql import MySQL
+#from flask_mysqldb import MySQL
 from werkzeug import generate_password_hash, check_password_hash
 
 mysql = MySQL()
@@ -8,7 +9,7 @@ app = Flask(__name__)
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'horse1998'
-app.config['MYSQL_DATABASE_DB'] = 'bucketlist'
+app.config['MYSQL_DATABASE_DB'] = 'BucketList'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
@@ -31,6 +32,20 @@ def showSignUp():
 @app.route('/showSignIn')
 def showSignIn():
     return render_template('signin.html')
+
+#Works but only through typing 'http://127.0.0.1:5000/Authenticate?UserName=Admin&Password=admin'
+#Also only works with EmpData database
+@app.route("/Authenticate")
+def Authenticate():
+    username = request.args.get('UserName')
+    password = request.args.get('Password')
+    cursor = mysql.connect().cursor()
+    cursor.execute("SELECT * from User where Username='" + username + "' and Password='" + password + "'")
+    data = cursor.fetchone()
+    if data is None:
+     return "Username or Password is wrong"
+    else:
+     return "Logged in successfully"
 
 ##Login()	
 ##	username = prompt user for username
