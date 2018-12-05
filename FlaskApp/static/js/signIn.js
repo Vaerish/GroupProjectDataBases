@@ -7,9 +7,11 @@
             type: 'GET',
             success: function(response) {
                 console.log(response);
+                window.location = '/dashboard';
             },
             error: function(error) {
                 console.log(error);
+                window.location = '/errorSignIn';
             }
         });
     });
