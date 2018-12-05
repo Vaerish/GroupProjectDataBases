@@ -36,10 +36,10 @@ def showSignIn():
 #Also only works with EmpData database
 @app.route("/Authenticate")
 def Authenticate():
-    username = request.args.get('UserName')
-    password = request.args.get('Password')
+    username = request.form['inputName']
+    password = request.form['inputPassword']
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from User where Username='" + username + "' and Password='" + password + "'")
+    cursor.execute("SELECT * from Account where username='" + username + "' and user_password='" + password + "'")
     data = cursor.fetchone()
     if data is None:
      return "Username or Password is wrong"
@@ -58,18 +58,16 @@ def Authenticate():
 @app.route('/signUp',methods=['POST','GET'])
 def signUp():
 	_name = request.form['inputName']
-	_email = request.form['inputEmail']
 	_password = request.form['inputPassword']
 
-	if _name and _email and _password:
+	if _name and _password:
 		try:
 			conn = mysql.connect()
 			cursor = conn.cursor()
-			cursor.execute('''INSERT INTO Account(username,user_password,user_email) VALUES(%s,%s,%s)''',(_name,_password,_email))
+			cursor.execute('''INSERT INTO Account(username,user_password) VALUES(%s,%s)''',(_name,_password))
 			conn.commit()
 		except Exception as e:
-			print('INSERTING ERROR:  ' + str(e))
-			return "Failed"
+			return ('INSERTING ERROR:  ' + str(e))
 	else:
 		return "Invalid Entry State"
 	return "Completed"
