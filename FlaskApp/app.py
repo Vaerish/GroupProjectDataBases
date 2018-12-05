@@ -1,4 +1,4 @@
-from flask import Flask, render_template, json, request
+from flask import Flask, render_template, json, request, redirect, url_for
 from flaskext.mysql import MySQL
 #from flask_mysqldb import MySQL
 from werkzeug import generate_password_hash, check_password_hash
@@ -78,8 +78,18 @@ def signUp():
 		except Exception as e:
 			return ('INSERTING ERROR:  ' + str(e))
 	else:
-		return render_template('error.html')
-	return "Completed"
+		return "error"
+	return "Success"
+
+@app.route('/success')
+def success():
+    return render_template('success.html')
+  
+
+@app.route('/errorSignUp')
+def errorSignUp():
+    return render_template('errorSignUp.html')
+
 
 @app.route('/dashboard')
 def dashboard():
