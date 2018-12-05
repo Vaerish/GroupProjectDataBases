@@ -54,6 +54,10 @@ def Authenticate():
 ##	else 
 ##		display login error message
 ##
+@app.route('/test')
+    def test():
+        #call sql
+        return render_template('test.html')
 
 @app.route('/signUp',methods=['POST','GET'])
 def signUp():
