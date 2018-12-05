@@ -8,7 +8,7 @@ app = Flask(__name__)
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'horse1998'
-app.config['MYSQL_DATABASE_DB'] = 'personalityquiz'
+app.config['MYSQL_DATABASE_DB'] = 'bucketlist'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
@@ -26,9 +26,12 @@ def about():
 @app.route('/showSignUp')
 def showSignUp():
     return render_template('signup.html')
+
+
 @app.route('/showSignIn')
 def showSignIn():
     return render_template('signin.html')
+
 ##Login()	
 ##	username = prompt user for username
 ##	password = prompt user for password
@@ -44,6 +47,7 @@ def signUp():
         _name = request.form['inputName']
         _email = request.form['inputEmail']
         _password = request.form['inputPassword']
+
 
         # validate the received values
         if _name and _email and _password:
@@ -69,6 +73,7 @@ def signUp():
     finally:
         cursor.close() 
         conn.close()
+        
 ##Create_User()	
 ##	username = prompt user for username
 ##	password = prompt user for password
@@ -95,7 +100,7 @@ def dashboard():
 ##		add weights of user chosen answer to the weights in personality
 ##	calculate personality_full_name in personality based on weights
 ##	add personality_full_name to previous_scores
-##
+
 ##Show_Personality_Score()	
 ##	p = retrieve personality_full_name from Personality matching to the current username
 ##	display the list of all celebrities with a matching personality
@@ -110,5 +115,10 @@ def dashboard():
 ##		display username next to their personality_full_name from the Personality table
 
 
+
+#Unused when running with 'flask run', to turn debug on must use 'set FLASK_DEBUG=1' in terminal every time
+#When using 'python app.py' to run script it will set debug to True, using the following lines
+#Must be kept underneath all @app.route declerations or it will inpede them running
 if __name__ == '__main__':
-    app.run(FLASK_DEBUG=1)
+    app.run(debug=True)
+
