@@ -34,7 +34,7 @@ def showSignIn():
     return render_template('signin.html')
 
 #Works but only through typing 'http://127.0.0.1:5000/Authenticate?UserName=Admin&Password=admin'
-#Also only works with EmpData database
+#Also only works with EmpData database. https://codehandbook.org/python-web-application-flask-mysql/
 @app.route("/Authenticate")
 def Authenticate():
     username = request.args.get('UserName')
