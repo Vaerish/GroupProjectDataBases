@@ -76,7 +76,7 @@ def signUp():
 			cursor.execute('''INSERT INTO Account(username,user_password) VALUES(%s,%s)''',(_name,_password))
 			conn.commit()
 		except Exception as e:
-			return ('INSERTING ERROR:  ' + str(e))
+			return e
 	else:
 		return "error"
 	return "Success"
