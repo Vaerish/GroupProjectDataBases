@@ -73,7 +73,12 @@ def test():
 FROM Question, Answer
 WHERE Question.question_number = Answer.question_number;''')
 	result = cursor.fetchall()
-	return render_template('test.html')
+	for r in result:
+                print r[1], r[3]
+
+        var = "R"
+        print var
+	return render_template('test.html',test = result,prev = var)
 
 @app.route('/signUp',methods=['POST','GET'])
 def signUp():
