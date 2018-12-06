@@ -14,42 +14,46 @@ mysql.init_app(app)
 
 @app.route('/')
 def main():
-    return render_template('index.html')
+	return render_template('index.html')
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+	return render_template('about.html')
 
 
 @app.route('/showSignUp')
 def showSignUp():
-    return render_template('signup.html')
+	return render_template('signup.html')
 
 
 @app.route('/showSignIn')
 def showSignIn():
-    return render_template('signin.html')
+	return render_template('signin.html')
 
 
 #Works but only through typing 'http://127.0.0.1:5000/Authenticate?UserName=Admin&Password=admin'
 #Also only works with EmpData database
 @app.route('/signIn',methods=['POST','GET'])
 def Authenticate():
-    username = request.form['inputName']
-    password = request.form['inputPassword']
-    cursor = mysql.connect().cursor()
-    cursor.execute('''SELECT * FROM Account WHERE username=%s''',(username))
-    result = cursor.fetchall()
-    if not len(result) == 0:
-    	if result[0][1] == password:
-    		print("SUCCCESSSFUL")
-    	else:
-    		print("Password incorrect")
-    else:
-    	print("No User Found")
-    return 'result'
-    
+	username = request.form['inputName']
+	password = request.form['inputPassword']
+	try:
+		if username and password:
+			cursor = mysql.connect().cursor()
+			cursor.execute('''SELECT * FROM Account WHERE username=%s''',(username))
+			result = cursor.fetchall()
+			if not len(result) == 0:
+				if result[0][1] == password:
+					return ("SUCCCESSSFUL")
+				else:
+					raise LookupError
+			else:
+				raise
+		else:
+			raise
+	except Exception as e:
+		return e
 
 ##Login()	
 ##	username = prompt user for username
@@ -61,8 +65,8 @@ def Authenticate():
 ##
 @app.route('/test')
 def test():
-    #call sql
-    return render_template('test.html')
+	#call sql
+	return render_template('test.html')
 
 @app.route('/signUp',methods=['POST','GET'])
 def signUp():
@@ -83,17 +87,17 @@ def signUp():
 
 @app.route('/success')
 def success():
-    return render_template('success.html')
+	return render_template('success.html')
   
 
 @app.route('/errorSignUp')
 def errorSignUp():
-    return render_template('errorSignUp.html')
+	return render_template('errorSignUp.html')
 
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+	return render_template('dashboard.html')
 
 
 
@@ -101,5 +105,5 @@ def dashboard():
 #When using 'python app.py' to run script it will set debug to True, using the following lines
 #Must be kept underneath all @app.route declerations or it will inpede them running
 if __name__ == '__main__':
-    app.run(debug=True)
+	app.run(debug=True)
 
