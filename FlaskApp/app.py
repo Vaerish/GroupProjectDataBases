@@ -75,7 +75,12 @@ def Authenticate():
 
 @app.route('/test')
 def test():
-	#call sql
+	conn = mysql.connect()
+	cursor = conn.cursor()
+	cursor.execute('''SELECT Question.question_number, question_text, answer_number, answer_text, E_I_weight, N_O_weight, T_F_weight, J_P_weight
+FROM Question, Answer
+WHERE Question.question_number = Answer.question_number;''')
+	result = cursor.fetchall()
 	return render_template('test.html')
 
 @app.route('/signUp',methods=['POST','GET'])
