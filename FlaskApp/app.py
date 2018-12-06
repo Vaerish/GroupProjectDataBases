@@ -1,6 +1,5 @@
 from flask import Flask, render_template, json, request, redirect, url_for
 from flaskext.mysql import MySQL
-#from flask_mysqldb import MySQL
 from werkzeug import generate_password_hash, check_password_hash
 
 mysql = MySQL()
@@ -32,8 +31,6 @@ def showSignIn():
 	return render_template('signin.html')
 
 
-#Works but only through typing 'http://127.0.0.1:5000/Authenticate?UserName=Admin&Password=admin'
-#Also only works with EmpData database
 @app.route('/signIn',methods=['POST','GET'])
 def Authenticate():
 	username = request.form['inputName']
@@ -63,6 +60,7 @@ def Authenticate():
 ##	else 
 ##		display login error message
 ##
+
 @app.route('/test')
 def test():
 	#call sql
@@ -88,11 +86,14 @@ def signUp():
 @app.route('/success')
 def success():
 	return render_template('success.html')
-  
 
 @app.route('/errorSignUp')
 def errorSignUp():
 	return render_template('errorSignUp.html')
+
+@app.route('/errorSignIn')
+def errorSignIn():
+    return render_template('errorSignIn.html')
 
 
 @app.route('/dashboard')
@@ -106,4 +107,3 @@ def dashboard():
 #Must be kept underneath all @app.route declerations or it will inpede them running
 if __name__ == '__main__':
 	app.run(debug=True)
-
