@@ -3,10 +3,6 @@ from flaskext.mysql import MySQL
 from werkzeug import generate_password_hash, check_password_hash
 
 USERNAME = ''
-personality_name = ''
-personality_desc = ''
-celeb = []
-comp = []
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -40,10 +36,6 @@ def showSignIn():
 @app.route('/signIn',methods=['POST','GET'])
 def Authenticate():
 	global USERNAME
-	global personality_name
-	global personality_desc
-	global celeb
-	global comp
 	username = request.form['inputName']
 	password = request.form['inputPassword']
 	try:
@@ -75,12 +67,7 @@ def Authenticate():
 
 @app.route('/test')
 def test():
-	conn = mysql.connect()
-	cursor = conn.cursor()
-	cursor.execute('''SELECT Question.question_number, question_text, answer_number, answer_text, E_I_weight, N_O_weight, T_F_weight, J_P_weight
-FROM Question, Answer
-WHERE Question.question_number = Answer.question_number;''')
-	result = cursor.fetchall()
+	#call sql
 	return render_template('test.html')
 
 @app.route('/signUp',methods=['POST','GET'])
@@ -93,7 +80,6 @@ def signUp():
 			conn = mysql.connect()
 			cursor = conn.cursor()
 			cursor.execute('''INSERT INTO Account(username,user_password) VALUES(%s,%s)''',(_name,_password))
-			cursor.execute('''INSERT INTO Has(username) VALUES(%s)''',(_name))
 			conn.commit()
 		except Exception as e:
 			return e
