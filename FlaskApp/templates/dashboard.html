@@ -17,21 +17,34 @@
         <div class="header">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"> {{user}}
+                    <li role="presentation" class="text-info" style="width:200px"> <h4>Signed In As: <strong>{{user}}</strong></h4>
                     </li>
                     <li role="presentation" class="active"><a href="">Dashboard</a>
                     </li>
-                    <li role="presentation"><a href="/test">Test</a>
+                    <li role="presentation"><a href="/test">Take Personality Test</a>
                     </li>
                 </ul>
             </nav>
             <h3 class="text-muted">Personality Test</h3>
         </div>
- 
-        <div class="jumbotron">
-            <h1>You have logged in</h1>
-            <p class="lead"></p>
-        </div>	
+        <ul class="nav nav-pills pull-right">
+            <li>
+                <div class="jumbotron" style="background-color: #e1e1ea">
+                    <h3><u><strong>ISTJ</strong> - The Duty Fulfiller</h3></u>
+                    <p style="font-size: 20px">{{Serious and quiet, interested in security and peaceful living. Extremely thorough, responsible, and dependable. Well-developed powers of concentration. Usually interested in supporting and promoting traditions and establishments. Well-organized and hard working, they work steadily towards identified goals. They can usually accomplish any task once they have set their mind to it.}}</p>
+                </div>
+            </li>
+            <li>
+                <div class="jumbotron" style="background-color: #535756;width: 100%">
+                    <h3 style="color:white"><u><strong>Compatibility</strong></u></h3>
+                    <p style="font-size: 20px;color:white">Mark Twain <i>(Writer)</i><br /><br />
+                        Captain Jack Sparrow <i>(Pirates of the Caribbean)</i><br /><br />
+                        Joelle Frye <i>(Most Compatible)</i><br /><br />
+                    </p>
+                </div>
+            </li>
+        </ul>
+        	
         <div class="row marketing">
             <div class="col-lg-6">
                 

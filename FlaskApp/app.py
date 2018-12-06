@@ -67,6 +67,7 @@ def Authenticate():
 
 @app.route('/test')
 def test():
+
 	conn = mysql.connect()
 	cursor = conn.cursor()
 	cursor.execute('''SELECT Question.question_number, question_text, answer_number, answer_text, E_I_weight, N_O_weight, T_F_weight, J_P_weight
