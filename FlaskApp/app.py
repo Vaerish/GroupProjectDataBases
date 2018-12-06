@@ -2,6 +2,8 @@ from flask import Flask, render_template, json, request, redirect, url_for
 from flaskext.mysql import MySQL
 from werkzeug import generate_password_hash, check_password_hash
 
+USERNAME = ''
+
 mysql = MySQL()
 app = Flask(__name__)
 # MySQL configurations
@@ -33,6 +35,7 @@ def showSignIn():
 
 @app.route('/signIn',methods=['POST','GET'])
 def Authenticate():
+	global USERNAME
 	username = request.form['inputName']
 	password = request.form['inputPassword']
 	try:
@@ -42,6 +45,7 @@ def Authenticate():
 			result = cursor.fetchall()
 			if not len(result) == 0:
 				if result[0][1] == password:
+					USERNAME = username
 					return ("SUCCCESSSFUL")
 				else:
 					raise LookupError
@@ -103,7 +107,7 @@ def errorSignIn():
 
 @app.route('/dashboard')
 def dashboard():
-	return render_template('dashboard.html')
+	return render_template('dashboard.html',user = USERNAME)
 
 
 
