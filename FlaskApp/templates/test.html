@@ -33,12 +33,20 @@
                 <th> Answer 1 &nbsp;   </th>
                 <th> Answer 2 &nbsp;  </th>
             </tr>
-                
+            {% for thing in test %}
+                <form>
+                <tr>
+                    <th> {{thing[0]}} </th>
+                    <th> <input type="radio", name={{thing[0]}}, value={{thing[2]}}> {{thing[1]}} </th>
+                    <th> <input type="radio", name={{thing[0]}},value={{thing[4]}}> {{thing[3]}} </th>
+                </tr>
+                {% endfor %}
+            </form>
+            <tr>
+                <th> </th>
+            </tr>
 
-                <tr id="1"><th> Ex1 </th></tr>
-                <tr id="2"><th> Ex2 </th> </tr>
-                <tr id="3"><th> Ex3 </th></tr>
-                <tr id="4"><th> Ex4 </th></tr>
+                
                 
                        
                 </tr>

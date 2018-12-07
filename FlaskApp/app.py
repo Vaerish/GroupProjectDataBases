@@ -75,11 +75,27 @@ FROM Question, Answer
 WHERE Question.question_number = Answer.question_number;''')
 	result = cursor.fetchall()
 	for r in result:
-                print r[1], r[3]
+                print r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7]
 
         var = "R"
-        print var
-	return render_template('test.html',test = result,prev = var)
+        holder = []
+        lst = []
+        for r in result:
+                if (var != r[1]):
+                        var = r[1]
+                        holder.append(r[1])
+                        holder.append(r[3])
+                        holder.append([r[4],r[5],r[6],r[7]])
+                else:
+                        holder.append(r[3])
+                        holder.append([r[4],r[5],r[6],r[7]])
+                        lst.append(holder)
+                        holder = []
+
+        for r in lst:
+                print r
+                        
+	return render_template('test.html',test = lst)
 
 @app.route('/signUp',methods=['POST','GET'])
 def signUp():
