@@ -38,6 +38,7 @@ def Authenticate():
 	global USERNAME
 	username = request.form['inputName']
 	password = request.form['inputPassword']
+	USERNAME = username
 	try:
 		if username and password:
 			cursor = mysql.connect().cursor()
@@ -104,7 +105,7 @@ def testResult():
 
 	print _questionOne, _questionTwo, _questionThree, _questionFour
 
-	if _questionOne and _questionTwo and _questionThree and _questionFour:
+	if _questionOne and _questionTwo and _questionThree and _questionFour and (request.method == 'POST'):
 		try:
 			if (_questionOne == '1'):
                                 inputs = 'E'
@@ -125,11 +126,6 @@ def testResult():
                         print inputs, USERNAME
                         conn = mysql.connect()
                         cursor = conn.cursor()
-                        cursor.execute('''INSERT INTO Has (username, personality_full_name)
-VALUES (%s,%s)''',(USERNAME, inputs))
-                        conn.commit()
-                        conn = mysql.connect()
-                        cursor = conn.cursor()
                         cursor.execute('''INSERT INTO Account2 (username, previous_scores)
 VALUES (%s, %s)''',(USERNAME, inputs))
                         conn.commit()
@@ -139,7 +135,7 @@ VALUES (%s, %s)''',(USERNAME, inputs))
                         _questionThree = ''
                         _questionFour = ''
 		except Exception as e:
-			return e
+			return 
 	else:
 		return "error"
 	return "Success"
