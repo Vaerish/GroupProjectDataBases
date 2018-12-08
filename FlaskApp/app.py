@@ -64,6 +64,9 @@ def Authenticate():
 ##	else 
 ##		display login error message
 ##
+@app.route('/errorTest')
+def errorTest():
+        return render_template('errorTest.html')
 
 @app.route('/test')
 def test():
@@ -74,10 +77,7 @@ def test():
 FROM Question, Answer
 WHERE Question.question_number = Answer.question_number;''')
 	result = cursor.fetchall()
-	for r in result:
-                print r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7]
-
-        var = "R"
+	var = "R"
         holder = []
         lst = []
         for r in result:
@@ -92,11 +92,58 @@ WHERE Question.question_number = Answer.question_number;''')
                         lst.append(holder)
                         holder = []
 
-        for r in lst:
-                print r
-                        
+        
 	return render_template('test.html',test = lst)
 
+@app.route('/testResult',methods=['POST','GET'])
+def testResult():
+        _questionOne = request.form['1']
+        _questionTwo = request.form['2']
+        _questionThree = request.form['3']
+        _questionFour = request.form['4']
+
+	print _questionOne, _questionTwo, _questionThree, _questionFour
+
+	if _questionOne and _questionTwo and _questionThree and _questionFour:
+		try:
+			if (_questionOne == '1'):
+                                inputs = 'E'
+                        else:
+                                inputs = 'I'
+			if (_questionTwo == '1'):
+                                inputs += 'P'
+                        else:
+                                inputs += 'J'
+                        if (_questionThree == '1'):
+                                inputs += 'T'
+                        else:
+                                inputs += 'F'
+                        if (_questionFour == '1'):
+                                inputs += 'N'
+                        else:
+                                inputs += 'O'
+                        print inputs, USERNAME
+                        conn = mysql.connect()
+                        cursor = conn.cursor()
+                        cursor.execute('''INSERT INTO Has (username, personality_full_name)
+VALUES (%s,%s)''',(USERNAME, inputs))
+                        conn.commit()
+                        conn = mysql.connect()
+                        cursor = conn.cursor()
+                        cursor.execute('''INSERT INTO Account2 (username, previous_scores)
+VALUES (%s, %s)''',(USERNAME, inputs))
+                        conn.commit()
+                        inputs = ''
+                        _questionOne = ''
+                        _questionTwo = ''
+                        _questionThree = ''
+                        _questionFour = ''
+		except Exception as e:
+			return e
+	else:
+		return "error"
+	return "Success"
+        
 @app.route('/signUp',methods=['POST','GET'])
 def signUp():
 	_name = request.form['inputName']

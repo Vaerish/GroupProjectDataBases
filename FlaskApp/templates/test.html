@@ -7,6 +7,10 @@
  
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+
+
+    <script src="../static/js/jquery-1.11.2.js"></script>
+    <script src="../static/js/test.js"></script>
  
  
 </head>
@@ -19,7 +23,7 @@
                 <ul class="nav nav-pills pull-right">
                     <li role="presentation"><a href="/dashboard">Dashboard</a>
                     </li>
-                    <li role="presentation" class="active"><a href="/test">Take Personality Test</a>
+                    <li role="presentation" class="active"><a href="/test">Personality Test</a>
                     </li>
                 </ul>
             </nav>
@@ -33,38 +37,47 @@
                 <th> Answer 1 &nbsp;   </th>
                 <th> Answer 2 &nbsp;  </th>
             </tr>
-            {% for thing in test %}
-                <form>
-                <tr>
-                    <th> {{thing[0]}} </th>
-                    <th> <input type="radio", name={{thing[0]}}, value={{thing[2]}}> {{thing[1]}} </th>
-                    <th> <input type="radio", name={{thing[0]}},value={{thing[4]}}> {{thing[3]}} </th>
+          <tr>
+                    <th> {{test[0][0]}} &nbsp; </th>
+                    <th> <input type="radio", name='1', id='1', value={{test[0][2][0]}}>
+                    <label for='1'> {{test[0][1]}}  &nbsp; </label> </th>
+                    <th> <input type="radio", id='1', name='1', value={{test[0][4][0]}}> 
+                        <label for='1'> {{test[0][3]}}  &nbsp; </label></th>
                 </tr>
-                {% endfor %}
-            </form>
-            <tr>
-                <th> </th>
-            </tr>
-
-                
-                
-                       
+                <tr>
+                    <th> {{test[1][0]}} &nbsp; </th>
+                    <th> <input type="radio", name='2', id='2', value={{test[1][2][3]}}>
+                    <label for='2'> {{test[1][1]}}  &nbsp; </label> </th>
+                    <th> <input type="radio", id='2', name='2', value={{test[1][4][3]}}> 
+                        <label for='2'> {{test[1][3]}} &nbsp; </label></th>
+                </tr>
+                <tr>
+                    <th> {{test[2][0]}} &nbsp; </th>
+                    <th> <input type="radio", name='3', id='3', value={{test[2][2][2]}}>
+                    <label for='3'> {{test[2][1]}} &nbsp; </label> </th>
+                    <th> <input type="radio", id='3', name='3', value={{test[2][4][2]}}> 
+                        <label for='3'> {{test[2][3]}}  &nbsp; </label></th>
+                </tr>
+                <tr>
+                    <th> {{test[3][0]}} &nbsp; </th>
+                    <th> <input type="radio", name='4', id='4', value={{test[3][2][1]}}>
+                    <label for='4'> {{test[3][1]}} &nbsp; </label> </th>
+                    <th> <input type="radio", id='4', name='4', value={{test[3][4][1]}}> 
+                        <label for='4'> {{test[3][3]}}  &nbsp; </label></th>
                 </tr>
             </table>
-            <p class="lead"></p>
+                <button id="btnTest" class="btn btn-lg btn-primary btn-block" type="button">Submit</button>
+            </form>
+           
+            </table>
         </div>	
-        <div class="row marketing">
-            <div class="col-lg-6">
-                
-            </div>
- 
-        </div>
- 
         <footer class="footer">
             <p>&copy; TheBMadisonCompany 2018</p>
-        </footer>
+    </footer>
+ </body>
+    
  
     </div>
-</body>
+
  
 </html>
