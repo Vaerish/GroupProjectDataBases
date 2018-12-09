@@ -2,7 +2,7 @@
 
 CREATE TABLE Account(
     username VARCHAR(20) PRIMARY KEY,
-    user_password VARCHAR(20),
+    user_password VARCHAR(50),
     most_compatible_user VARCHAR(20),
     FOREIGN KEY (most_compatible_user)
         REFERENCES Account(username)
@@ -30,9 +30,17 @@ CREATE TABLE Account(
     N_O ENUM('N','O') NOT NULL,
     T_F ENUM('T','F') NOT NULL,
     J_P ENUM('J','P') NOT NULL,
-    personailty_full_name VARCHAR(4) AS (CONCAT(E_I,N_O,T_F,J_P)),
-    short_description VARCHAR(1000),
-    username VARCHAR(20) PRIMARY KEY,
+    personality_full_name VARCHAR(4) PRIMARY KEY,
+    short_description VARCHAR(1000)
+);
+
+CREATE TABLE Has(
+    username VARCHAR(20),
+    personality_full_name VARCHAR(4),
+    PRIMARY KEY(username,personality_full_name),
+    FOREIGN KEY(personality_full_name)
+        REFERENCES Personality(personality_full_name)
+        ON DELETE CASCADE,
     FOREIGN KEY(username)
         REFERENCES Account(username)
         ON DELETE CASCADE
