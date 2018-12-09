@@ -38,6 +38,7 @@ def Authenticate():
 	global USERNAME
 	username = request.form['inputName']
 	password = request.form['inputPassword']
+	USERNAME = username
 	try:
 		if username and password:
 			cursor = mysql.connect().cursor()
@@ -64,12 +65,81 @@ def Authenticate():
 ##	else 
 ##		display login error message
 ##
+@app.route('/errorTest')
+def errorTest():
+        return render_template('errorTest.html')
 
 @app.route('/test')
 def test():
-	#call sql
-	return render_template('test.html')
 
+	conn = mysql.connect()
+	cursor = conn.cursor()
+	cursor.execute('''SELECT Question.question_number, question_text, answer_number, answer_text, E_I_weight, N_O_weight, T_F_weight, J_P_weight
+FROM Question, Answer
+WHERE Question.question_number = Answer.question_number;''')
+	result = cursor.fetchall()
+	var = "R"
+        holder = []
+        lst = []
+        for r in result:
+                if (var != r[1]):
+                        var = r[1]
+                        holder.append(r[1])
+                        holder.append(r[3])
+                        holder.append([r[4],r[5],r[6],r[7]])
+                else:
+                        holder.append(r[3])
+                        holder.append([r[4],r[5],r[6],r[7]])
+                        lst.append(holder)
+                        holder = []
+
+        
+	return render_template('test.html',test = lst)
+
+@app.route('/testResult',methods=['POST','GET'])
+def testResult():
+        _questionOne = request.form['1']
+        _questionTwo = request.form['2']
+        _questionThree = request.form['3']
+        _questionFour = request.form['4']
+
+	print _questionOne, _questionTwo, _questionThree, _questionFour
+
+	if _questionOne and _questionTwo and _questionThree and _questionFour and (request.method == 'POST'):
+		try:
+			if (_questionOne == '1'):
+                                inputs = 'E'
+                        else:
+                                inputs = 'I'
+			if (_questionTwo == '1'):
+                                inputs += 'P'
+                        else:
+                                inputs += 'J'
+                        if (_questionThree == '1'):
+                                inputs += 'T'
+                        else:
+                                inputs += 'F'
+                        if (_questionFour == '1'):
+                                inputs += 'N'
+                        else:
+                                inputs += 'O'
+                        print inputs, USERNAME
+                        conn = mysql.connect()
+                        cursor = conn.cursor()
+                        cursor.execute('''INSERT INTO Account2 (username, previous_scores)
+VALUES (%s, %s)''',(USERNAME, inputs))
+                        conn.commit()
+                        inputs = ''
+                        _questionOne = ''
+                        _questionTwo = ''
+                        _questionThree = ''
+                        _questionFour = ''
+		except Exception as e:
+			return 
+	else:
+		return "error"
+	return "Success"
+        
 @app.route('/signUp',methods=['POST','GET'])
 def signUp():
 	_name = request.form['inputName']
@@ -98,6 +168,7 @@ def errorSignUp():
 @app.route('/errorSignIn')
 def errorSignIn():
     return render_template('errorSignIn.html')
+
 
 
 @app.route('/dashboard')
