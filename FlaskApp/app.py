@@ -3,6 +3,9 @@ from flaskext.mysql import MySQL
 from werkzeug import generate_password_hash, check_password_hash
 
 USERNAME = ''
+MOST_COMPATIBLE = ['','','']
+CURR_PERSONALITY = ''
+PERSONALITY_DESC = ''
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -36,6 +39,8 @@ def showSignIn():
 @app.route('/signIn',methods=['POST','GET'])
 def Authenticate():
 	global USERNAME
+	global CURR_PERSONALITY
+	global MOST_COMPATIBLE
 	username = request.form['inputName']
 	password = request.form['inputPassword']
 	USERNAME = username
@@ -47,6 +52,21 @@ def Authenticate():
 			if not len(result) == 0:
 				if result[0][1] == password:
 					USERNAME = username
+					try:
+						cursor.execute('''SELECT most_compatible_user FROM Account WHERE username = %s;''',(username))
+						result = cursor.fetchall()
+						MOST_COMPATIBLE[0] = result[0][0]
+						cursor.execute('''SELECT previous_scores FROM Account2 WHERE username = %s ORDER BY Attempt DESC LIMIT 1;''',(username))
+						result = cursor.fetchall()
+						CURR_PERSONALITY = result[0][0]
+						cursor.execute('''SELECT name,occupation FROM Famous_Figure WHERE personality_type = %s;''',(CURR_PERSONALITY))
+						result = cursor.fetchall()
+						MOST_COMPATIBLE[1] = result[0][0]
+						MOST_COMPATIBLE[2] = result[0][1]
+					except Exception as e:
+						MOST_COMPATIBLE = None
+						CURR_PERSONALITY = "Complete The Test!"
+					print(MOST_COMPATIBLE)
 					return ("SUCCCESSSFUL")
 				else:
 					raise LookupError
@@ -67,7 +87,7 @@ def Authenticate():
 ##
 @app.route('/errorTest')
 def errorTest():
-        return render_template('errorTest.html')
+		return render_template('errorTest.html')
 
 @app.route('/test')
 def test():
@@ -79,67 +99,68 @@ FROM Question, Answer
 WHERE Question.question_number = Answer.question_number;''')
 	result = cursor.fetchall()
 	var = "R"
-        holder = []
-        lst = []
-        for r in result:
-                if (var != r[1]):
-                        var = r[1]
-                        holder.append(r[1])
-                        holder.append(r[3])
-                        holder.append([r[4],r[5],r[6],r[7]])
-                else:
-                        holder.append(r[3])
-                        holder.append([r[4],r[5],r[6],r[7]])
-                        lst.append(holder)
-                        holder = []
+	holder = []
+	lst = []
+	for r in result:
+			if (var != r[1]):
+					var = r[1]
+					holder.append(r[1])
+					holder.append(r[3])
+					holder.append([r[4],r[5],r[6],r[7]])
+			else:
+					holder.append(r[3])
+					holder.append([r[4],r[5],r[6],r[7]])
+					lst.append(holder)
+					holder = []
 
-        
+		
 	return render_template('test.html',test = lst)
 
 @app.route('/testResult',methods=['POST','GET'])
 def testResult():
-        _questionOne = request.form['1']
-        _questionTwo = request.form['2']
-        _questionThree = request.form['3']
-        _questionFour = request.form['4']
+	_questionOne = request.form['1']
+	_questionTwo = request.form['2']
+	_questionThree = request.form['3']
+	_questionFour = request.form['4']
 
-	print _questionOne, _questionTwo, _questionThree, _questionFour
+	print(_questionOne, _questionTwo, _questionThree, _questionFour)
 
 	if _questionOne and _questionTwo and _questionThree and _questionFour and (request.method == 'POST'):
 		try:
 			if (_questionOne == '1'):
-                                inputs = 'E'
-                        else:
-                                inputs = 'I'
+				inputs = 'E'
+			else:
+				inputs = 'I'
 			if (_questionTwo == '1'):
-                                inputs += 'P'
-                        else:
-                                inputs += 'J'
-                        if (_questionThree == '1'):
-                                inputs += 'T'
-                        else:
-                                inputs += 'F'
-                        if (_questionFour == '1'):
-                                inputs += 'N'
-                        else:
-                                inputs += 'O'
-                        print inputs, USERNAME
-                        conn = mysql.connect()
-                        cursor = conn.cursor()
-                        cursor.execute('''INSERT INTO Account2 (username, previous_scores)
+				inputs += 'N'
+			else:
+				inputs += 'O'
+			if (_questionThree == '1'):
+				inputs += 'T'
+			else:
+				inputs += 'F'
+			if (_questionFour == '1'):
+				inputs += 'J'
+			else:
+				inputs += 'P'
+			print( inputs, USERNAME)
+			conn = mysql.connect()
+			cursor = conn.cursor()
+			cursor.execute('''INSERT INTO Account2 (username, previous_scores)
 VALUES (%s, %s)''',(USERNAME, inputs))
-                        conn.commit()
-                        inputs = ''
-                        _questionOne = ''
-                        _questionTwo = ''
-                        _questionThree = ''
-                        _questionFour = ''
+			conn.commit()
+			cursor.execute(''' ''')
+			inputs = ''
+			_questionOne = ''
+			_questionTwo = ''
+			_questionThree = ''
+			_questionFour = ''
 		except Exception as e:
 			return 
 	else:
 		return "error"
 	return "Success"
-        
+		
 @app.route('/signUp',methods=['POST','GET'])
 def signUp():
 	_name = request.form['inputName']
@@ -167,13 +188,21 @@ def errorSignUp():
 
 @app.route('/errorSignIn')
 def errorSignIn():
-    return render_template('errorSignIn.html')
+	return render_template('errorSignIn.html')
 
 
 
 @app.route('/dashboard')
 def dashboard():
-	return render_template('dashboard.html',user = USERNAME)
+	global PERSONALITY_DESC
+	if MOST_COMPATIBLE:
+		cursor = mysql.connect().cursor()
+		cursor.execute('''SELECT short_description FROM Personality WHERE personality_full_name = %s;''',(CURR_PERSONALITY))
+		result = cursor.fetchall()
+		PERSONALITY_DESC = result[0][0]
+	else:
+		PERSONALITY_DESC = 'It seems you have not taken the Personality Quiz yet. To begin the quiz hit the button that says "Take Personality Test". After completing the test you will be able to see interesting information concerning you personality type!'
+	return render_template('dashboard.html',user = USERNAME, personality = CURR_PERSONALITY, most_compatible= MOST_COMPATIBLE, personailty_desc = PERSONALITY_DESC)
 
 
 
