@@ -8,6 +8,7 @@ CURR_PERSONALITY = 'Complete the test'
 PERSONALITY_DESC = None
 COMPAT = ''
 PREVIOUS_SCORES = [' ',' ',' ']
+PERCENTAGE = 0
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -243,7 +244,7 @@ def dashboard():
 
 				cursor.execute('''SELECT COUNT(username) FROM Account2 WHERE previous_scores = %s;''',(CURR_PERSONALITY))
 				result2 = cursor.fetchall()
-				PERCENTAGE = round((int(result2[0][0]) * 1.0)/int(result[0][0]), 2)
+				PERCENTAGE = round((int(result2[0][0]) * 1.0)/int(result[0][0])*100, 2)
 				#-----------------------
 
 				#Previous Scores
