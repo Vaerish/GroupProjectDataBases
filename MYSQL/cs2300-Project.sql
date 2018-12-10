@@ -10,12 +10,13 @@ CREATE TABLE Account(
  );
  
  CREATE TABLE Account2(
+    Attempt INT NOT NULL AUTO_INCREMENT,
     username VARCHAR(20),
     previous_scores VARCHAR(4),
     FOREIGN KEY(username)
         REFERENCES Account(username)
         ON DELETE CASCADE,
-    PRIMARY KEY(username, previous_scores)
+    PRIMARY KEY(username, Attempt)
  );
  
  CREATE TABLE Famous_Figure(
@@ -32,18 +33,6 @@ CREATE TABLE Account(
     J_P ENUM('J','P') NOT NULL,
     personality_full_name VARCHAR(4) PRIMARY KEY,
     short_description VARCHAR(1000)
-);
-
-CREATE TABLE Has(
-    username VARCHAR(20),
-    personality_full_name VARCHAR(4),
-    PRIMARY KEY(username,personality_full_name),
-    FOREIGN KEY(personality_full_name)
-        REFERENCES Personality(personality_full_name)
-        ON DELETE CASCADE,
-    FOREIGN KEY(username)
-        REFERENCES Account(username)
-        ON DELETE CASCADE
 );
 
 CREATE TABLE Question(
