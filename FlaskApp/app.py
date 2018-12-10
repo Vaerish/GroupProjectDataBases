@@ -44,6 +44,19 @@ def Authenticate():
 		global USERNAME
 		global CURR_PERSONALITY
 		global MOST_COMPATIBLE
+		global COMPAT
+		global PREVIOUS_SCORES
+		global PERCENTAGE
+		#reset value
+		USERNAME = ' '
+		CURR_PERSONALITY = 'Complete the test'
+		MOST_COMPATIBLE = ['','','', '']
+		COMPAT = ' '
+		PREVIOUS_SCORES = [' ',' ',' ']
+		PERCENTAGE = 0
+		CURR_PERSONALITY = None
+
+		#----------
 		username = request.form['inputName']
 		password = request.form['inputPassword']
 		USERNAME = username
@@ -256,11 +269,10 @@ def dashboard():
 				for i in range(0,len(result)):
 					PREVIOUS_SCORES[i] = result[i][0]
 				#------------------------
-
 				return render_template('dashboard.html',user = USERNAME, personality = CURR_PERSONALITY, most_compatible= MOST_COMPATIBLE, personailty_desc = PERSONALITY_DESC, percentage = PERCENTAGE,scores=PREVIOUS_SCORES)
 		elif USERNAME != '':
 				PERSONALITY_DESC = 'It seems you have not taken the Personality Quiz yet. To begin the quiz hit the button that says "Take Personality Test". After completing the test you will be able to see interesting information concerning you personality type!'
-				return render_template('dashboard.html',user = USERNAME, personality = CURR_PERSONALITY, most_compatible= MOST_COMPATIBLE, personailty_desc = PERSONALITY_DESC,percentage = PERCENTAGE,scores=PREVIOUS_SCORES)
+				return render_template('dashboard.html',user = USERNAME, personality = CURR_PERSONALITY, most_compatible= MOST_COMPATIBLE, personailty_desc = PERSONALITY_DESC, percentage = PERCENTAGE,scores=PREVIOUS_SCORES)
 		else:
 				return render_template('signin.html')
 
