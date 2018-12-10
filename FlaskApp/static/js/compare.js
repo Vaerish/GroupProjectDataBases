@@ -1,17 +1,17 @@
 $(function() {
-    $('#btnTest').click(function() {
+    $('#btnCompare').click(function() {
  
         $.ajax({
-            url: '/testResult',
+            url: '/testCompare',
             data: $('form').serialize(),
             type: 'POST',
             success: function(response) {
                 console.log(response);
-                window.location = '/testFinished';
+                window.location = '/compareFinished';
             },
             error: function(error) {
                 console.log(error);
-                window.location = '/errorTest';
+                window.location = '/compareError';
             }
         });
     });
