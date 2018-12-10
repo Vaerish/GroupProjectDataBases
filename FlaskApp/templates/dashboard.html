@@ -31,7 +31,7 @@
         <ul class="nav nav-pills pull-right">
             <li>
                 <div class="jumbotron" style="background-color: #e1e1ea">
-                    <h3><u><strong>{{personality}}-</strong></h3></u>
+                    <h3><u><strong>{{personality}}-</strong> {{percentage}}% of Users</h3></u>
                     <p style="font-size: 20px">{{personailty_desc}}</p>
                 </div>
             </li>
@@ -42,6 +42,30 @@
                         {{most_compatible[0]}} <i>(Most Compatible User)</i><br /><br />
                     </p>
                 </div>
+            </li>
+            <li>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Top 3 Previous Scores</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>{{scores[0]}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>{{scores[1]}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>{{scores[2]}}</td>
+                    </tr>
+                  </tbody>
+                </table>
             </li>
         </ul>
         	

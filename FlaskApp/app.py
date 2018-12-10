@@ -7,6 +7,7 @@ MOST_COMPATIBLE = ['','','', '']
 CURR_PERSONALITY = 'Complete the test'
 PERSONALITY_DESC = None
 COMPAT = ''
+PREVIOUS_SCORES = [' ',' ',' ']
 
 mysql = MySQL()
 app = Flask(__name__)
@@ -56,7 +57,7 @@ def Authenticate():
                                                 user = USERNAME
                                                 cursor.execute('''SELECT previous_scores FROM Account2 WHERE username = %s ORDER BY Attempt DESC LIMIT 1;''',(user))
                                                 result = cursor.fetchall()
-                                                print result[0][0], 'stuff', user, '0'
+                                                print (result[0][0], 'stuff', user, '0')
                                                 CURR_PERSONALITY = result[0][0]
                                                 cursor.execute('''SELECT username FROM Account2 WHERE previous_scores = %s and username != %s ORDER BY Attempt DESC LIMIT 1;''',(CURR_PERSONALITY, user))
                                                 result = cursor.fetchall()
@@ -197,7 +198,7 @@ def compareError():
 
 @app.route('/compareFinished')
 def compareFinished():
-        print COMPAT
+        print (COMPAT)
         return render_template('compareFinished.html',compat = COMPAT)
 
 @app.route('/testCompare',methods=['POST','GET'])
@@ -221,7 +222,7 @@ def testCompare():
                         return e
         else:
                 return "error"
-        print COMPAT
+        print (COMPAT)
         return "Success"
 
 
@@ -229,12 +230,33 @@ def testCompare():
 @app.route('/dashboard')
 def dashboard():
         global PERSONALITY_DESC
+        global PREVIOUS_SCORES
         if MOST_COMPATIBLE and USERNAME != '':
                 cursor = mysql.connect().cursor()
                 cursor.execute('''SELECT short_description FROM Personality WHERE personality_full_name = %s;''',(CURR_PERSONALITY))
                 result = cursor.fetchall()
                 PERSONALITY_DESC = result[0][0]
-                return render_template('dashboard.html',user = USERNAME, personality = CURR_PERSONALITY, most_compatible= MOST_COMPATIBLE, personailty_desc = PERSONALITY_DESC)
+
+                #Percentage Code
+                cursor.execute('''SELECT COUNT(previous_scores) FROM Account2;''')
+                result = cursor.fetchall()
+
+                cursor.execute('''SELECT COUNT(username) FROM Account2 WHERE previous_scores = %s;''',(CURR_PERSONALITY))
+                result2 = cursor.fetchall()
+                PERCENTAGE = round((int(result2[0][0]) * 1.0)/int(result[0][0]), 2)
+                #-----------------------
+
+                #Previous Scores
+                cursor.execute('''SELECT previous_scores FROM Account2 WHERE username = %s;''',(USERNAME))
+                result = cursor.fetchall()
+                if len(result) > 3:
+                	result = result[:3]
+
+                for i in range(0,len(result)):
+                	PREVIOUS_SCORES[i] = result[i][0]
+                #------------------------
+
+                return render_template('dashboard.html',user = USERNAME, personality = CURR_PERSONALITY, most_compatible= MOST_COMPATIBLE, personailty_desc = PERSONALITY_DESC, percentage = PERCENTAGE,scores=PREVIOUS_SCORES)
         elif USERNAME != '':
                 PERSONALITY_DESC = 'It seems you have not taken the Personality Quiz yet. To begin the quiz hit the button that says "Take Personality Test". After completing the test you will be able to see interesting information concerning you personality type!'
                 return render_template('dashboard.html',user = USERNAME, personality = CURR_PERSONALITY, most_compatible= MOST_COMPATIBLE, personailty_desc = PERSONALITY_DESC)
