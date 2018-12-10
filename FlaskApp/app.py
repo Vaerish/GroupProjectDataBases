@@ -232,6 +232,7 @@ def testCompare():
 def dashboard():
 		global PERSONALITY_DESC
 		global PREVIOUS_SCORES
+		global PERCENTAGE
 		if MOST_COMPATIBLE and USERNAME != '':
 				cursor = mysql.connect().cursor()
 				cursor.execute('''SELECT short_description FROM Personality WHERE personality_full_name = %s;''',(CURR_PERSONALITY))
